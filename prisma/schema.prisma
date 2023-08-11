@@ -11,13 +11,167 @@ datasource db {
 }
 
 model User {
-  //id is uuid 
+  id           String        @id @default(uuid())
+  email        String        @unique
+  auth_type    auth_type     @default(local)
+  password     String?
+  is_active    Boolean       @default(true)
+  is_admin     Boolean       @default(false)
+  created_at   DateTime      @default(now())
+  updated_at   DateTime      @updatedAt
+  profile      Profile?      @relation(name: "UserToProfile")
+  subscrition  Subscription? @relation(name: "UserToSubscription")
+  enrollements Course[]      @relation(name: "UserToCourse")
+  authored     Course[]      @relation(name: "UserAuthorToCourse")
+  Forum_posts  Forum_post[]
+  Forum_topic  Forum_topic[]
+}
+
+model Profile {
   id         String   @id @default(uuid())
-  email      String   @unique
-  auth_type  String
-  password   String?
-  is_active  Boolean  @default(true)
-  is_admin   Boolean  @default(false)
+  first_name String
+  last_name  String
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
+  User       User     @relation(name: "UserToProfile", fields: [UserId], references: [id])
+  UserId     String   @unique
+}
+
+model Subscription {
+  id         String   @id @default(uuid())
+  user_id    String
+  user       User     @relation(name: "UserToSubscription", fields: [UserId], references: [id])
+  UserId     String   @unique
+  plan       Plan     @default(free)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+model Course {
+  id                String           @id @default(uuid())
+  title             String           @unique
+  subtitle          String
+  description       String
+  authors           User[]           @relation(name: "UserAuthorToCourse")
+  imageUrl          String
+  urlPath           String           @unique
+  date_created      DateTime         @default(now())
+  date_last_updated DateTime         @updatedAt
+  date_published    DateTime
+  published         Boolean          @default(true)
+  sections          Course_section[]
+  students_enrolled User[]           @relation(name: "UserToCourse")
+  Course_forum      Course_forum?
+}
+
+model Course_section {
+  id                String           @id @default(uuid())
+  title             String           @unique
+  date_created      DateTime         @default(now())
+  date_last_updated DateTime         @updatedAt
+  date_published    DateTime
+  published         Boolean          @default(true)
+  course            Course           @relation(fields: [course_id], references: [id])
+  course_id         String
+  chapters          Course_chapter[]
+  Forum_forum       Forum_forum?
+  Course_forum      Course_forum?    @relation(fields: [course_forumId], references: [id])
+  course_forumId    String?
+}
+
+model Course_chapter {
+  id                String         @id @default(uuid())
+  title             String         @unique
+  description       String
+  date_created      DateTime       @default(now())
+  date_last_updated DateTime       @updatedAt
+  date_published    DateTime
+  published         Boolean        @default(true)
+  course_section    Course_section @relation(fields: [course_section_id], references: [id])
+  course_section_id String
+  pages             Course_page[]
+  labs              Course_lab[]
+  media             Course_media[]
+}
+
+model Course_page {
+  id                String         @id @default(uuid())
+  content           String
+  date_created      DateTime       @default(now())
+  date_last_updated DateTime       @updatedAt
+  date_published    DateTime
+  published         Boolean        @default(true)
+  course_chapter    Course_chapter @relation(fields: [course_chapter_id], references: [id])
+  course_chapter_id String
+}
+
+model Course_lab {
+  id                String         @id @default(uuid())
+  content           String
+  date_created      DateTime       @default(now())
+  date_last_updated DateTime       @updatedAt
+  date_published    DateTime
+  published         Boolean        @default(true)
+  course_chapter    Course_chapter @relation(fields: [course_chapter_id], references: [id])
+  course_chapter_id String
+}
+
+model Course_media {
+  id                String         @id @default(uuid())
+  date_created      DateTime       @default(now())
+  date_last_updated DateTime       @updatedAt
+  date_published    DateTime
+  published         Boolean        @default(true)
+  course_chapter    Course_chapter @relation(fields: [course_chapter_id], references: [id])
+  course_chapter_id String
+}
+
+model Course_forum {
+  id             String           @id @default(uuid())
+  course         Course           @relation(fields: [course_id], references: [id])
+  course_id      String           @unique
+  forums         Forum_forum[]
+  Course_section Course_section[]
+}
+
+model Forum_forum {
+  id               String         @id @default(uuid())
+  name             String
+  forum_topics     Forum_topic[]
+  Course_forum     Course_forum?  @relation(fields: [course_forumId], references: [id])
+  course_forumId   String?
+  course_section   Course_section @relation(fields: [course_sectionId], references: [id])
+  course_sectionId String         @unique
+}
+
+model Forum_topic {
+  id            String       @id @default(uuid())
+  name          String
+  author        User         @relation(fields: [authorId], references: [id])
+  authorId      String
+  content       String
+  forum_posts   Forum_post[]
+  Forum_forum   Forum_forum  @relation(fields: [forum_forumId], references: [id])
+  forum_forumId String
+}
+
+model Forum_post {
+  id            String      @id @default(uuid())
+  author        User        @relation(fields: [authorId], references: [id])
+  authorId      String
+  content       String
+  Forum_topic   Forum_topic @relation(fields: [forum_topicId], references: [id])
+  forum_topicId String
+}
+
+enum auth_type {
+  local
+  google
+  facebook
+}
+
+enum Plan {
+  free
+  basic
+  premium
 }
