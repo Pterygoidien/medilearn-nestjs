@@ -3,9 +3,10 @@ import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
 import { CoursesModule } from "./apps/learn/course/courses.module";
 import { LoggerMiddleware } from "./global/middlewares/logger.middleware";
+import { ConfigModule } from "@nestjs/config";
 
 @Module({
-    imports: [CoursesModule],
+    imports: [CoursesModule, ConfigModule.forRoot()],
     controllers: [AppController],
     providers: [AppService],
 })
