@@ -9,8 +9,15 @@ const courses: ICourse[] = [
         subtitle: "Build a full-stack application with Angular and NestJS",
         description:
             "Learn how to build a full-stack application with Angular and NestJS",
-        imageURL:
-            "https://storage.googleapis.com/learn_nestjs/cover_learnnestjs.png",
+        image: {
+            imageUrl:
+                "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://s3.amazonaws.com/coursera_assets/ddp/branding/bcs-uol/thumbnail.jpg?auto=format%2Ccompress%2C%20enhance&dpr=2&w=265&h=204&fit=crop&q=50",
+            imageAlt: "Learn NestJS",
+            imageDimensions: {
+                width: 530,
+                height: 408,
+            },
+        },
         categories: [
             {
                 id: "1",
@@ -25,12 +32,88 @@ const courses: ICourse[] = [
         subtitle: "Build a full-stack application with Angular and NestJS",
         description:
             "Learn how to build a full-stack application with Angular and NestJS",
-        imageURL:
-            "https://storage.googleapis.com/learn_nestjs/cover_learnnestjs.png",
+        image: {
+            imageUrl:
+                "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://s3.amazonaws.com/coursera_assets/ddp/branding/bcs-uol/thumbnail.jpg?auto=format%2Ccompress%2C%20enhance&dpr=2&w=265&h=204&fit=crop&q=50",
+            imageAlt: "Learn NestJS",
+            imageDimensions: {
+                width: 530,
+                height: 408,
+            },
+        },
         categories: [
             {
                 id: "2",
                 name: "Angular",
+            },
+        ],
+        courseURL: "https://learn.nestjs.com",
+    },
+    {
+        id: "3zearzr",
+        title: "Learn React",
+        subtitle: "Build a full-stack application with Angular and NestJS",
+        description:
+            "Learn how to build a full-stack application with Angular and NestJS",
+        image: {
+            imageUrl:
+                "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://s3.amazonaws.com/coursera_assets/ddp/branding/bcs-uol/thumbnail.jpg?auto=format%2Ccompress%2C%20enhance&dpr=2&w=265&h=204&fit=crop&q=50",
+            imageAlt: "Learn NestJS",
+            imageDimensions: {
+                width: 530,
+                height: 408,
+            },
+        },
+        categories: [
+            {
+                id: "3",
+                name: "React",
+            },
+        ],
+        courseURL: "https://learn.nestjs.com",
+    },
+    {
+        id: "4zearzr",
+        title: "Learn Vue",
+        subtitle: "Build a full-stack application with Angular and NestJS",
+        description:
+            "Learn how to build a full-stack application with Angular and NestJS",
+        image: {
+            imageUrl:
+                "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://s3.amazonaws.com/coursera_assets/ddp/branding/bcs-uol/thumbnail.jpg?auto=format%2Ccompress%2C%20enhance&dpr=2&w=265&h=204&fit=crop&q=50",
+            imageAlt: "Learn NestJS",
+            imageDimensions: {
+                width: 530,
+                height: 408,
+            },
+        },
+        categories: [
+            {
+                id: "4",
+                name: "Vue",
+            },
+        ],
+        courseURL: "https://learn.nestjs.com",
+    },
+    {
+        id: "5zearzr",
+        title: "Learn Svelte",
+        subtitle: "Build a full-stack application with Angular and NestJS",
+        description:
+            "Learn how to build a full-stack application with Angular and NestJS",
+        image: {
+            imageUrl:
+                "https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://s3.amazonaws.com/coursera_assets/ddp/branding/bcs-uol/thumbnail.jpg?auto=format%2Ccompress%2C%20enhance&dpr=2&w=265&h=204&fit=crop&q=50",
+            imageAlt: "Learn NestJS",
+            imageDimensions: {
+                width: 530,
+                height: 408,
+            },
+        },
+        categories: [
+            {
+                id: "5",
+                name: "Svelte",
             },
         ],
         courseURL: "https://learn.nestjs.com",
@@ -54,7 +137,14 @@ export class CourseService {
             title: course.title,
             subtitle: course.subtitle,
             description: course.description,
-            imageURL: course.imageURL,
+            image: {
+                imageUrl: course.image.imageUrl,
+                imageAlt: course.image.imageAlt,
+                imageDimensions: {
+                    width: course.image.imageDimensions.width,
+                    height: course.image.imageDimensions.height,
+                },
+            },
             categories: course.categories,
             courseURL: course.courseURL,
         };
